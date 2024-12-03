@@ -4,6 +4,7 @@ from openpyxl import load_workbook
 import os
 import win32print
 import win32api
+import traceback
 
 class ExcelFillerApp:
     def __init__(self, root):
@@ -88,6 +89,15 @@ class ExcelFillerApp:
             win32api.ShellExecute(0, "print", filepath, None, ".", 0)
         except Exception as e:
             messagebox.showerror("错误", f"打印失败: {e}")
+
+# 捕获未处理异常
+def exception_handler(exc_type, exc_value, exc_tb):
+    error_message = "".join(traceback.format_exception(exc_type, exc_value, exc_tb))
+    messagebox.showerror("错误", f"程序发生异常:\n{error_message}")
+
+# 设置全局异常处理
+import sys
+sys.excepthook = exception_handler
 
 # 创建应用程序
 root = tk.Tk()
